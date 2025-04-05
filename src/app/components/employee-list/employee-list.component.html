@@ -51,7 +51,7 @@
         <ng-container
             *ngIf="employeeService.currentEmployees().length === 0 && employeeService.previousEmployees().length === 0">
             <div class="empty-state">
-                <img src="/assets/no-employee-record-found.png" alt="No employee records found" class="empty-state-image">
+                <div class="empty-state-image"></div>
                 <!-- <p>No employee records found</p> -->
             </div>
         </ng-container>
