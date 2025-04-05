@@ -1,0 +1,78 @@
+<div class="header">
+    <h1>Employee List</h1>
+</div>
+
+<div class="content">
+    <div class="main-content">
+        <ng-container *ngIf="employeeService.currentEmployees().length > 0">
+            <div class="section-header">
+                <h2>Current employees</h2>
+            </div>
+
+            <div class="employee-list">
+                <div *ngFor="let employee of employeeService.currentEmployees()" class="employee-card" swipeLeft
+                    (swipeLeft)="deleteEmployee(employee)">
+                    <div class="employee-info" (click)="editEmployee(employee.id)">
+                        <h3>{{ employee.name }}</h3>
+                        <p>{{ employee.role }}</p>
+                        <p>From {{ employee.startDate | date:'d MMM, yyyy' }}</p>
+                    </div>
+                    <div class="delete-indicator">
+                        <div class="delete-button" (click)="deleteEmployee(employee); $event.stopPropagation()">
+                            <i class="material-icons">delete</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="employeeService.previousEmployees().length > 0">
+            <div class="section-header">
+                <h2>Previous employees</h2>
+            </div>
+
+            <div class="employee-list">
+                <div *ngFor="let employee of employeeService.previousEmployees()" class="employee-card" swipeLeft
+                    (swipeLeft)="permanentlyDeleteEmployee(employee)">
+                    <div class="employee-info" (click)="editEmployee(employee.id)">
+                        <h3>{{ employee.name }}</h3>
+                        <p>{{ employee.role }}</p>
+                        <p>{{ employee.startDate | date:'d MMM, yyyy' }} - {{ employee.endDate | date:'d MMM, yyyy' }}</p>
+                    </div>
+                    <div class="delete-indicator">
+                        <div class="delete-button" (click)="permanentlyDeleteEmployee(employee); $event.stopPropagation()">
+                            <i class="material-icons">delete_forever</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container
+            *ngIf="employeeService.currentEmployees().length === 0 && employeeService.previousEmployees().length === 0">
+            <div class="empty-state">
+                <div class="empty-state-image"></div>
+                <!-- <p>No employee records found</p> -->
+            </div>
+        </ng-container>
+    </div>
+
+    <div *ngIf="employeeService.currentEmployees().length > 0 || employeeService.previousEmployees().length > 0"
+        class="bottom-section">
+        <p>Swipe left to delete</p>
+        <div style="width: 40px; height: 40px;"></div>
+        <!-- <button class="add-button" (click)="addEmployee()">
+            <i class="material-icons">add</i>
+        </button> -->
+    </div>
+</div>
+
+<button class="add-button" [class.with-toast]="deletedEmployee" (click)="addEmployee()">
+    <i class="material-icons">add</i>
+</button>
+
+<div *ngIf="deletedEmployee" class="toast-notification">
+    <!-- <span>Employee data has been moved to Previous employees</span> -->
+    <span>Employee data has been deleted</span>
+    <button (click)="undoDelete()">Undo</button>
+</div>

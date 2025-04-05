@@ -1,0 +1,40 @@
+<div class="date-picker-overlay">
+    <div class="date-picker-content">
+        <div class="quick-date-options">
+            <button *ngIf="showNone" class="quick-date-btn" [class.selected]="quickOptionSelected === 'none'" (click)="selectNone()">No date</button>
+            <button class="quick-date-btn" [class.selected]="quickOptionSelected === 'today'" (click)="selectToday()">Today</button>
+            <button *ngIf="!showNone" class="quick-date-btn" [class.selected]="quickOptionSelected === 'nextMonday'" (click)="selectNextMonday()">Next Monday</button>
+            <button *ngIf="!showNone" class="quick-date-btn" [class.selected]="quickOptionSelected === 'nextTuesday'" (click)="selectNextTuesday()">Next Tuesday</button>
+            <button *ngIf="!showNone" class="quick-date-btn" [class.selected]="quickOptionSelected === 'afterOneWeek'" (click)="selectAfterOneWeek()">After 1 week</button>
+        </div>
+
+        <div class="calendar-header">
+            <button class="month-nav" (click)="previousMonth()">◀</button>
+            <div class="month-year">{{ monthNames[calendarMonth.getMonth()] }} {{ calendarMonth.getFullYear() }}</div>
+            <button class="month-nav" (click)="nextMonth()">▶</button>
+        </div>
+
+        <div class="week-days">
+            <div *ngFor="let day of weekDays" class="week-day">{{ day }}</div>
+        </div>
+
+        <div class="calendar-days">
+            <div *ngFor="let day of calendarDays" class="calendar-day" [class.current-month]="day.isCurrentMonth"
+                [class.today]="day.isToday" [class.selected]="day.isSelected"
+                (click)="day.date && selectTempDate(day.date)">
+                {{ day.date ? day.date.getDate() : '' }}
+            </div>
+        </div>
+
+        <div class="date-picker-footer">
+            <div class="selected-date">
+                <i class="material-icons">calendar_today</i>
+                {{ getSaveLabel() }}
+            </div>
+            <div class="footer-buttons">
+                <button class="btn-cancel" (click)="cancel()">Cancel</button>
+                <button class="btn-save" (click)="saveSelectedDate()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
